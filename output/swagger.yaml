@@ -1,0 +1,2026 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "e-books",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:3000"
+  } ],
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "tags" : [ {
+    "name" : "books",
+    "description" : "Deal with list of books"
+  }, {
+    "name" : "book"
+  }, {
+    "name" : "filter"
+  }, {
+    "name" : "genre"
+  }, {
+    "name" : "auther"
+  }, {
+    "name" : "search"
+  }, {
+    "name" : "user"
+  } ],
+  "paths" : {
+    "/books" : {
+      "get" : {
+        "tags" : [ "books" ],
+        "summary" : "Get books list",
+        "description" : "Get books list.\n\nthe default values to the query prams is `page` = 1 and the `len =` 10 **note:** that `page` starts with 1.",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "the page number",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "1"
+        }, {
+          "name" : "len",
+          "in" : "query",
+          "description" : "number of books per page",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "10"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "page" : 1,
+                  "len" : 10,
+                  "books" : [ {
+                    "id" : 1,
+                    "title" : "book 1",
+                    "isbn" : "ISBN 10: 0768374464",
+                    "url" : "localhost:3000/assets/book.pdf",
+                    "authers" : [ {
+                      "id" : 2,
+                      "name" : "Ahmed"
+                    } ],
+                    "publishDate" : "2012-04-23T18:25:43.511Z",
+                    "genres" : [ {
+                      "id" : 1,
+                      "name" : "software"
+                    }, {
+                      "id" : 2,
+                      "name" : "cloud"
+                    } ]
+                  }, {
+                    "id" : 5,
+                    "title" : "book 3",
+                    "isbn" : "ISBN 10: 0768374564",
+                    "url" : "localhost:3000/assets/book3.pdf",
+                    "authers" : [ {
+                      "id" : 1,
+                      "name" : "Robert"
+                    } ],
+                    "publishDate" : "2013-04-23T18:25:43.511Z",
+                    "genres" : [ {
+                      "id" : 3,
+                      "name" : "comics"
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Resource does not exist"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "books" ],
+        "summary" : "Delete list of books",
+        "description" : "Note: Only **Super Admin** and **Admins** can delete list of books.",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "books deleted successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Resource does not exist"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/book/{id}" : {
+      "get" : {
+        "tags" : [ "book" ],
+        "summary" : "Get Book by :id",
+        "description" : "Get book data by its `:id`",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "id" : 1,
+                  "title" : "book 1",
+                  "isbn" : "ISBN 10: 0768374464",
+                  "url" : "localhost:3000/assets/book.pdf",
+                  "authers" : [ {
+                    "id" : 2,
+                    "name" : "Ahmed"
+                  } ],
+                  "publishDate" : "2012-04-23T18:25:43.511Z",
+                  "genres" : [ {
+                    "id" : 1,
+                    "name" : "software"
+                  }, {
+                    "id" : 2,
+                    "name" : "cloud"
+                  } ]
+                }
+              }
+            }
+          },
+          "undefined" : {
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Book not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "book" ],
+        "summary" : "Update Book by :id",
+        "description" : "Update book data by its `:id`",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "title" : "book 1",
+                  "isbn" : "ISBN 10: 0768374464",
+                  "url" : "localhost:3000/assets/book.pdf",
+                  "authersIds" : [ 4, 5 ],
+                  "publishDate" : "2012-04-23T18:25:43.511Z",
+                  "genresIds" : [ 2, 3 ]
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "Book updated successfully"
+                }
+              }
+            }
+          },
+          "undefined" : {
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Book not updated"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "book" ],
+        "summary" : "Delete Book by :id",
+        "description" : "Get book data by its `:id`",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "Book deleted successfully"
+                }
+              }
+            }
+          },
+          "undefined" : {
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Book not deleted"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/book/" : {
+      "post" : {
+        "tags" : [ "book" ],
+        "summary" : "Add new book",
+        "description" : "Add new book to database.",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "title" : "book 1",
+                  "isbn" : "ISBN 10: 0768374464",
+                  "url" : "localhost:3000/assets/book.pdf",
+                  "authersIds" : [ 4, 5 ],
+                  "publishDate" : "2012-04-23T18:25:43.511Z",
+                  "genresIds" : [ 2, 3 ]
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "The Book added successfully"
+                }
+              }
+            }
+          },
+          "undefined" : {
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "The Book not added"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/filter" : {
+      "get" : {
+        "tags" : [ "filter" ],
+        "summary" : "filter",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "1"
+        }, {
+          "name" : "len",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "10"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "page" : 1,
+                  "len" : 10,
+                  "books" : [ {
+                    "id" : 1,
+                    "title" : "book 1",
+                    "isbn" : "ISBN 10: 0768374464",
+                    "url" : "localhost:3000/assets/book.pdf",
+                    "authers" : [ {
+                      "id" : 2,
+                      "name" : "Ahmed"
+                    } ],
+                    "publishDate" : "2012-04-23T18:25:43.511Z",
+                    "genres" : [ {
+                      "id" : 1,
+                      "name" : "software"
+                    }, {
+                      "id" : 2,
+                      "name" : "cloud"
+                    } ]
+                  }, {
+                    "id" : 5,
+                    "title" : "book 3",
+                    "isbn" : "ISBN 10: 0768374564",
+                    "url" : "localhost:3000/assets/book3.pdf",
+                    "authers" : [ {
+                      "id" : 1,
+                      "name" : "Robert"
+                    } ],
+                    "publishDate" : "2013-04-23T18:25:43.511Z",
+                    "genres" : [ {
+                      "id" : 3,
+                      "name" : "comics"
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Something error happend"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genres" : {
+      "get" : {
+        "tags" : [ "filter" ],
+        "summary" : "get genres",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "1"
+        }, {
+          "name" : "len",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "10"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "page" : 1,
+                  "len" : 10,
+                  "genres" : [ {
+                    "id" : 1,
+                    "name" : "software"
+                  }, {
+                    "id" : 2,
+                    "name" : "cloud"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Something error happend"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authers" : {
+      "get" : {
+        "tags" : [ "filter" ],
+        "summary" : "Get authers",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "1"
+        }, {
+          "name" : "len",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "10"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "page" : 1,
+                  "len" : 10,
+                  "authers" : [ {
+                    "id" : 1,
+                    "name" : "software"
+                  }, {
+                    "id" : 2,
+                    "name" : "cloud"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "Something error happend"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genre/{id}" : {
+      "get" : {
+        "tags" : [ "genre" ],
+        "summary" : "Get genre by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "id" : 1,
+                  "name" : "software"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "genre not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "genre" ],
+        "summary" : "Update genre by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "name" : "software"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "genre updated successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              },
+              "" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : ""
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "genre not found"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "genre" ],
+        "summary" : "Delete genre by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "genre deleted successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "genre not deleted"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/genre/" : {
+      "post" : {
+        "tags" : [ "genre" ],
+        "summary" : "Add new genre",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "name" : "software"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "genre added successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "genre not added"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/auther/{id}" : {
+      "get" : {
+        "tags" : [ "auther" ],
+        "summary" : "Get auther by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "id" : 1,
+                  "name" : "Ahmed"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "auther not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "auther" ],
+        "summary" : "Update auther by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "name" : "software"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "auther updated successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              },
+              "" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : ""
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "auther not found"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "auther" ],
+        "summary" : "Delete auther by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "auther deleted successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "auther not deleted"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/auther/" : {
+      "post" : {
+        "tags" : [ "auther" ],
+        "summary" : "Add new auther",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "name" : "Ahmed"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "auther added successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "auther not added"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/search/" : {
+      "get" : {
+        "tags" : [ "search" ],
+        "summary" : "Search",
+        "parameters" : [ {
+          "name" : "title",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "book 1"
+        }, {
+          "name" : "isbn",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "ISBN 10: 0768374464"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response",
+            "content" : {
+              "application/json" : { }
+            }
+          }
+        }
+      }
+    },
+    "/user" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "get user by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "5"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "name" : "Ahmed Mohamed",
+                  "phone" : "+201155578548",
+                  "emails" : [ "eamil1@gmail.com" ],
+                  "birthDate" : "2012-04-23T18:25:43.511Z",
+                  "role" : "customer"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "can not get user data"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "Update user data",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "5"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "name" : "Ahmed Mohamed",
+                  "phone" : "+201155578548",
+                  "emails" : "eamil1@gmail.com",
+                  "birthDate" : "2012-04-23T18:25:43.511Z",
+                  "password" : "qwerqwerqer"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "user updated successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "user not updated"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "create user",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : {
+                  "name" : "Ahmed Mohamed",
+                  "phone" : "+201155578548",
+                  "email" : "eamil1@gmail.com",
+                  "birthDate" : "2012-04-23T18:25:43.511Z",
+                  "password" : "qwerqwerqer"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "user added successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "user not added"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "noauthAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "user" ],
+        "summary" : "Delete user by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "5"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "user deleted successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "can not delete the user"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/user/role" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "Change user role",
+        "description" : "Change the user Role, We have 3 roles `superAdmin` `admin` `customer`\n\nNote: Only the `superAdmin` can change the role of other users",
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "1"
+        }, {
+          "name" : "role",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "admin"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : ""
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "user role changed successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "can not change the user role"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "basicAuth" : [ ]
+        } ]
+      }
+    },
+    "/user/email" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Add email to user",
+        "description" : "Change the user Role, We have 3 roles `superAdmin` `admin` `customer`\n\nNote: Only the `superAdmin` can change the role of other users",
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "email3@gmail.com"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "example" : ""
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "email added successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "can not add this email to the user"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    },
+    "/user/login" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "login",
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "email@gmail.com"
+        }, {
+          "name" : "password",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "example" : "5484656468"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "user can not login"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "noauthAuth" : [ ]
+        } ]
+      }
+    },
+    "/user/logout" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "logout",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 200,
+                  "message" : "user loged out successfully"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "Content-Type" : {
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "example" : "application/json"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : {
+                  "status" : 400,
+                  "message" : "something error occure"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : { },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer"
+      },
+      "noauthAuth" : {
+        "type" : "http",
+        "scheme" : "noauth"
+      },
+      "basicAuth" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    }
+  }
+}
